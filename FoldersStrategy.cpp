@@ -55,7 +55,7 @@ void FoldersStartegy::PrintToConsole(const QMap<QString, qint64>& FoldersListSiz
     out.setCodec("CP866");
     for (auto& x : FoldersAndPercents)
     {
-        out << qSetFieldWidth(60) << x.first << qSetFieldWidth(10)  << FoldersListSizes.value(x.first) / 1024
+        out << qSetFieldWidth(60) << x.first << qSetFieldWidth(10)  << FoldersListSizes.value(x.first) / 1024.0
             << qSetFieldWidth(4)<< "KB";
         if (x.second < 0) {
             out << qSetFieldWidth(8) << "< 0.01 %\n";
