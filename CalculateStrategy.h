@@ -19,10 +19,19 @@ public:
     }
     void setStrategy(ICalculate* calculate_strategy)
     {
+        if (strat) {
+            delete strat;
+        }
         strat = calculate_strategy;
     }
+    ~CalculateStrategy()
+    {
+        if (strat) {
+            delete strat;
+        }
+    }
 private:
-    ICalculate *strat;
+    ICalculate *strat = nullptr;
 };
 
 #endif // CALCULATESTRATEGY_H
