@@ -1,7 +1,8 @@
-QT -= gui
+QT  += core gui
 
-CONFIG += c++11 console
-CONFIG -= app_bundle
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+CONFIG += c++11
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -11,6 +12,7 @@ SOURCES += \
     CalculateSizeFunctions.cpp \
     FileTypesStrategy.cpp \
     FoldersStrategy.cpp \
+    filemanagerform.cpp \
     main.cpp
 
 # Default rules for deployment.
@@ -23,4 +25,8 @@ HEADERS += \
     CalculateStrategy.h \
     Data.h \
     FileTypesStrategy.h \
-    FoldersStrategy.h
+    FoldersStrategy.h \
+    filemanagerform.h
+
+FORMS += \
+    filemanagerform.ui

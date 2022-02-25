@@ -17,7 +17,11 @@ public:
     explicit CalculateStrategy(ICalculate* c) : strat(c) {}
     QList<Data> Calculate(const QString& path)
     {
-        return strat->Calculate(path);
+        if (strat) {
+            return strat->Calculate(path);
+        } else {
+            return QList<Data>();
+        }
     }
     void setStrategy(ICalculate* calculate_strategy)
     {
