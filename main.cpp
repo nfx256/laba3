@@ -7,9 +7,9 @@ int main(int argc, char *argv[])
 {
     ICalculate* calc_strat = new FileTypesStartegy;
     CalculateStrategy* calc = new CalculateStrategy(calc_strat);
-    calc->Calculate("D:/Temp");
+    auto data = calc->Calculate("D:/Temp");
     calc->setStrategy(new FoldersStartegy);
-    calc->Calculate("D:/Temp");
+    auto data2 = calc->Calculate("D:/Temp");
     delete calc;
     return 0;
 }

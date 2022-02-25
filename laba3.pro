@@ -21,5 +21,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     CalculateSizeFunctions.h \
     CalculateStrategy.h \
+    Data.h \
     FileTypesStrategy.h \
     FoldersStrategy.h

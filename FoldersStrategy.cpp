@@ -4,16 +4,17 @@
 #include <QDebug>
 
 
-void FoldersStartegy::Calculate(const QString &path)
+QList<Data> FoldersStartegy::Calculate(const QString &path)
 {
     QFileInfo folder(path);
     if (!folder.exists() && !folder.isReadable()){
         qDebug() << "Error! Folder doesn't exist or not readable" << Qt::endl;
-        return;
+        return QList<Data>();
     }
     QMap<QString, qint64> FoldersSizesList = CalculateFoldersSizes(path);
     QList<QPair<QString, double> > FoldersAndPercents = CalculateFoldersPercentage(CalculateSize::sumSizes(FoldersSizesList), FoldersSizesList);
-    PrintToConsole(FoldersSizesList, FoldersAndPercents);
+//    PrintToConsole(FoldersSizesList, FoldersAndPercents);
+    return MergeToData(FoldersSizesList, FoldersAndPercents);
 }
 
 QMap<QString, qint64> FoldersStartegy::CalculateFoldersSizes(const QString &path) const
@@ -63,4 +64,14 @@ void FoldersStartegy::PrintToConsole(const QMap<QString, qint64>& FoldersListSiz
             out << qSetFieldWidth(8) << QString::number(x.second, 'f', 2).append(" %") << "\n";
         }
     }
+}
+
+QList<Data> FoldersStartegy::MergeToData(const QMap<QString, qint64> &FoldersListSizes, const QList<QPair<QString, double> > &FoldersAndPercents) const
+{
+    QList<Data> data;
+    for (auto& x : FoldersAndPercents)
+    {
+        data.append(Data(x.first, FoldersListSizes.value(x.first), x.second));
+    }
+    return data;
 }

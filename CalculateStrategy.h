@@ -1,11 +1,13 @@
 #ifndef CALCULATESTRATEGY_H
 #define CALCULATESTRATEGY_H
 #include <QString>
+#include <QList>
+#include "Data.h"
 
 class ICalculate
 {
 public:
-    virtual void Calculate(const QString& path) = 0;
+    virtual QList<Data> Calculate(const QString& path) = 0;
     virtual ~ICalculate() {}
 };
 
@@ -13,9 +15,9 @@ class CalculateStrategy
 {
 public:
     explicit CalculateStrategy(ICalculate* c) : strat(c) {}
-    void Calculate(const QString& path)
+    QList<Data> Calculate(const QString& path)
     {
-        strat->Calculate(path);
+        return strat->Calculate(path);
     }
     void setStrategy(ICalculate* calculate_strategy)
     {
