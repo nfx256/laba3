@@ -12,6 +12,7 @@ SOURCES += \
     CalculateSizeFunctions.cpp \
     FileTypesStrategy.cpp \
     FoldersStrategy.cpp \
+    filedisplaymodel.cpp \
     filemanagerform.cpp \
     main.cpp
 
@@ -26,6 +27,7 @@ HEADERS += \
     Data.h \
     FileTypesStrategy.h \
     FoldersStrategy.h \
+    filedisplaymodel.h \
     filemanagerform.h
 
 FORMS += \
