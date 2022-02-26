@@ -2,7 +2,7 @@
 #include <QLocale>
 
 FileDisplayModel::FileDisplayModel(const QList<Data> &data, QObject *parent)
-    : QAbstractItemModel{parent}
+    : QAbstractTableModel{parent}
 {
     model_data = data;
 }

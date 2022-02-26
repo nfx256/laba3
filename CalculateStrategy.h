@@ -14,6 +14,7 @@ public:
 class CalculateStrategy
 {
 public:
+    CalculateStrategy() = default;
     explicit CalculateStrategy(ICalculate* c) : strat(c) {}
     QList<Data> Calculate(const QString& path)
     {

@@ -4,7 +4,7 @@
 
 #include <QAbstractItemModel>
 
-class FileDisplayModel : public QAbstractItemModel
+class FileDisplayModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:

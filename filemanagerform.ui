@@ -28,12 +28,12 @@
         <widget class="QComboBox" name="groupBox">
          <item>
           <property name="text">
-           <string>Group by folders</string>
+           <string>By Folders</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Group by types</string>
+           <string>By Types</string>
           </property>
          </item>
         </widget>

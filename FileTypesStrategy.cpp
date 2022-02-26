@@ -79,7 +79,7 @@ QList<Data> FileTypesStartegy::MergeToData(const QMap<QString, qint64> &TypesLis
     QList<Data> data;
     for (auto& x : TypesAndPercents)
     {
-        data.append(Data(x.first, TypesListSizes.value(x.first), x.second));
+        data.append(Data("*." + x.first, TypesListSizes.value(x.first), x.second));
     }
     return data;
 }
