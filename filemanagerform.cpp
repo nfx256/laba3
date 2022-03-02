@@ -37,15 +37,13 @@ void FileManagerForm::changeDataInModel()
     switch (group) {
     case Grouping::ByFolders:
         strategy->setStrategy(new FoldersStartegy);
-        data = strategy->Calculate(path);
-        display_model->setDataToModel(data);
         break;
     case Grouping::ByTypes:
         strategy->setStrategy(new FileTypesStartegy);
-        data = strategy->Calculate(path);
-        display_model->setDataToModel(data);
         break;
     }
+    data = strategy->Calculate(path);
+    display_model->setDataToModel(data);
     ui->tableView->setModel(display_model);
 }
 
