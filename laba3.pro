@@ -1,4 +1,4 @@
-QT  += core gui
+QT  += core gui charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     CalculateSizeFunctions.cpp \
+    Chart.cpp \
     FileTypesStrategy.cpp \
     FoldersStrategy.cpp \
     filedisplaymodel.cpp \
@@ -24,7 +25,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     CalculateSizeFunctions.h \
     CalculateStrategy.h \
+    Chart.h \
     Data.h \
+    FileObserver.h \
     FileTypesStrategy.h \
     FoldersStrategy.h \
     filedisplaymodel.h \
