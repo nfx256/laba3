@@ -3,42 +3,19 @@
 #include <QString>
 #include <QList>
 #include "Data.h"
-
-class ICalculate
-{
-public:
-    virtual QList<Data> Calculate(const QString& path) = 0;
-    virtual ~ICalculate() {}
-};
+#include "FileObserver.h"
 
 class CalculateStrategy
 {
 public:
-    CalculateStrategy() = default;
-    explicit CalculateStrategy(ICalculate* c) : strat(c) {}
-    QList<Data> Calculate(const QString& path)
-    {
-        if (strat) {
-            return strat->Calculate(path);
-        } else {
-            return QList<Data>();
-        }
-    }
-    void setStrategy(ICalculate* calculate_strategy)
-    {
-        if (strat) {
-            delete strat;
-        }
-        strat = calculate_strategy;
-    }
-    ~CalculateStrategy()
-    {
-        if (strat) {
-            delete strat;
-        }
-    }
+    virtual void Calculate(const QString& path) = 0;
+    void Subscribe(FileObserver* observer);
+    void Unsubscribe(FileObserver* observer);
+    void Update(const QList<Data>& data);
+    virtual ~CalculateStrategy() {}
 private:
-    ICalculate *strat = nullptr;
+    QList<FileObserver*> observers;
 };
+
 
 #endif // CALCULATESTRATEGY_H

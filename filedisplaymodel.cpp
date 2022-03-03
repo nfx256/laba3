@@ -1,10 +1,18 @@
 #include "filedisplaymodel.h"
 #include <QLocale>
+#include <QLayout>
 
 FileDisplayModel::FileDisplayModel(const QList<Data> &data, QObject *parent)
     : QAbstractTableModel{parent}
 {
     model_data = data;
+}
+
+FileDisplayModel::FileDisplayModel(QLayout *layout, QObject *parent) : QAbstractTableModel{parent}
+{
+    view = new QTableView();
+    view->setModel(this);
+    layout->addWidget(view);
 }
 
 void FileDisplayModel::setDataToModel(const QList<Data> &data)
@@ -65,4 +73,10 @@ QVariant FileDisplayModel::headerData(int section, Qt::Orientation orientation, 
         return QString::fromUtf8("Процент");
     }
     return QVariant();
+}
+
+
+void FileDisplayModel::UpdateData(const QList<Data> &data)
+{
+    this->setDataToModel(data);
 }

@@ -2,65 +2,66 @@
 #include "ui_filemanagerform.h"
 #include "FoldersStrategy.h"
 #include "FileTypesStrategy.h"
-
+#include "Chart.h"
 
 FileManagerForm::FileManagerForm(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::FileManagerForm)
+    ui(new Ui::FileManagerForm),
+    folder_strat(new FoldersStrategy),
+    types_strat(new FileTypesStrategy),
+    strategy(folder_strat)
 {
     ui->setupUi(this);
-    strategy = new CalculateStrategy();
-    display_model = new FileDisplayModel();
     tree_model = new QFileSystemModel(this);
     tree_model->setRootPath(QDir::currentPath());
     tree_model->setFilter(QDir::AllDirs | QDir::Hidden | QDir::NoDotAndDotDot );
-    ui->treeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->treeView->setModel(tree_model);
-    group = Grouping::ByFolders;
+    ui->treeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
-    connect(ui->groupBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FileManagerForm::changeGrouping);
-    connect(ui->treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this,  &FileManagerForm::selectionChanged);
+    observers.push_back(new FileDisplayModel(ui->stackedWidget->layout()));
+    observers.push_back(new PieChart(ui->stackedWidget->layout()));
+    observers.push_back(new BarChart(ui->stackedWidget->layout()));
+    for (auto& obs : observers) {
+        folder_strat->Subscribe(obs);
+        types_strat->Subscribe(obs);
+    }
+
+    connect(ui->groupBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &FileManagerForm::changeGrouping);
+    connect(ui->treeView->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this,  &FileManagerForm::selectionChanged);
+    connect(ui->displayBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &FileManagerForm::changeDisplay);
 }
 
 FileManagerForm::~FileManagerForm()
 {
+    qDeleteAll(observers);
     delete ui;
-    delete strategy;
-    delete display_model;
+    delete folder_strat;
+    delete types_strat;
     delete tree_model;
-}
-
-void FileManagerForm::changeDataInModel()
-{
-    if (path.isEmpty())
-        return;
-    switch (group) {
-    case Grouping::ByFolders:
-        strategy->setStrategy(new FoldersStartegy);
-        break;
-    case Grouping::ByTypes:
-        strategy->setStrategy(new FileTypesStartegy);
-        break;
-    }
-    data = strategy->Calculate(path);
-    display_model->setDataToModel(data);
-    ui->tableView->setModel(display_model);
 }
 
 void FileManagerForm::changeGrouping(int index)
 {
     switch (index) {
-        case 0:
-            group = Grouping::ByFolders;
-            break;
-        case 1:
-            group = Grouping::ByTypes;
-            break;
-        default:
-            group = Grouping::ByFolders;
-            break;
+    case 0:
+        strategy = folder_strat;
+        break;
+    case 1:
+        strategy = types_strat;
+        break;
+    default:
+        strategy = folder_strat;
+        break;
     }
-    changeDataInModel();
+    strategy->Calculate(path);
+}
+
+void FileManagerForm::changeDisplay(int index)
+{
+    ui->stackedWidget->setCurrentIndex(index);
 }
 
 void FileManagerForm::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
@@ -69,7 +70,6 @@ void FileManagerForm::selectionChanged(const QItemSelection &selected, const QIt
 
     QModelIndexList indexes = selected.indexes();
     path = tree_model->filePath(indexes[0]);
-    changeDataInModel();
+    strategy->Calculate(path);
 }
-
 

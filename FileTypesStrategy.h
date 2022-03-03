@@ -3,12 +3,12 @@
 #include "CalculateStrategy.h"
 #include <QPair>
 
-class FileTypesStartegy : public ICalculate
+class FileTypesStrategy : public CalculateStrategy
 {
 public:
-    FileTypesStartegy() = default;
-    QList<Data> Calculate(const QString &path) override;
-    virtual ~FileTypesStartegy() {}
+    FileTypesStrategy() = default;
+    void Calculate(const QString &path) override;
+    virtual ~FileTypesStrategy() {}
 private:
     void CalculateTypesAndSizes(const QString& path, QMap<QString, qint64>& fileTypesAndSizes) const;
     QList<QPair<QString, double> > CalculateTypesPercentage(qint64 totalSize, QMap<QString, qint64>& fileTypesAndSizes) const;

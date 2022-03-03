@@ -9,7 +9,6 @@ namespace CalculateSize
     qint64 getTotalSize(const QString& path);
     qint64 sumSizes(const QMap<QString, qint64>& Sizes);
     qint64 getSizeOfDir(const QString& path);
-
 }
 
 

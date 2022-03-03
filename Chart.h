@@ -9,8 +9,9 @@ class Chart : public FileObserver
 {
 
 public:
-    Chart();
-    void SetChart(const QList<Data>& data);
+    Chart() = default;
+    Chart(QLayout *layout);
+    void SetDataChart(const QList<Data>& data);
     // FileObserver interface
     void UpdateData(const QList<Data> &data) override;
     void SetDataToChart(const QList<Data>& data) const;

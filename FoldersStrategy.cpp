@@ -3,21 +3,20 @@
 #include <QFileInfo>
 #include <QDebug>
 
-
-QList<Data> FoldersStartegy::Calculate(const QString &path)
+void FoldersStrategy::Calculate(const QString &path)
 {
     QFileInfo folder(path);
     if (!folder.exists() && !folder.isReadable()){
         qDebug() << "Error! Folder doesn't exist or not readable" << Qt::endl;
-        return QList<Data>();
+        return;
     }
     QMap<QString, qint64> FoldersSizesList = CalculateFoldersSizes(path);
     QList<QPair<QString, double> > FoldersAndPercents = CalculateFoldersPercentage(CalculateSize::sumSizes(FoldersSizesList), FoldersSizesList);
 //    PrintToConsole(FoldersSizesList, FoldersAndPercents);
-    return MergeToData(FoldersSizesList, FoldersAndPercents);
+    Update(MergeToData(FoldersSizesList, FoldersAndPercents));
 }
 
-QMap<QString, qint64> FoldersStartegy::CalculateFoldersSizes(const QString &path) const
+QMap<QString, qint64> FoldersStrategy::CalculateFoldersSizes(const QString &path) const
 {
     QFileInfo folder(path);
     QString absolutePath = folder.absoluteFilePath();
@@ -31,7 +30,7 @@ QMap<QString, qint64> FoldersStartegy::CalculateFoldersSizes(const QString &path
     return FoldersSizesList;
 }
 
-QList<QPair<QString, double> > FoldersStartegy::CalculateFoldersPercentage(const qint64& totalSize,
+QList<QPair<QString, double> > FoldersStrategy::CalculateFoldersPercentage(const qint64& totalSize,
             const QMap<QString, qint64>& FoldersList) const
 {
     QList<QPair<QString, double> > FoldersAndPercents;
@@ -50,7 +49,7 @@ QList<QPair<QString, double> > FoldersStartegy::CalculateFoldersPercentage(const
     return FoldersAndPercents;
 }
 
-void FoldersStartegy::PrintToConsole(const QMap<QString, qint64>& FoldersListSizes, const QList<QPair<QString, double> >& FoldersAndPercents) const
+void FoldersStrategy::PrintToConsole(const QMap<QString, qint64>& FoldersListSizes, const QList<QPair<QString, double> >& FoldersAndPercents) const
 {
     QTextStream out(stdout);
     out.setCodec("CP866");
@@ -66,7 +65,7 @@ void FoldersStartegy::PrintToConsole(const QMap<QString, qint64>& FoldersListSiz
     }
 }
 
-QList<Data> FoldersStartegy::MergeToData(const QMap<QString, qint64> &FoldersListSizes, const QList<QPair<QString, double> > &FoldersAndPercents) const
+QList<Data> FoldersStrategy::MergeToData(const QMap<QString, qint64> &FoldersListSizes, const QList<QPair<QString, double> > &FoldersAndPercents) const
 {
     QList<Data> data;
     for (auto& x : FoldersAndPercents)

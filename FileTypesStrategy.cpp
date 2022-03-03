@@ -3,21 +3,21 @@
 #include <QFileInfo>
 #include <QDebug>
 
-QList<Data> FileTypesStartegy::Calculate(const QString &path)
+void FileTypesStrategy::Calculate(const QString &path)
 {
     QFileInfo folder(path);
     if (!folder.exists() && !folder.isReadable()){
         qDebug() << "Error! Folder doesn't exist or not readable." << Qt::endl;
-        return QList<Data>();
+        return;
     }
     QMap<QString, qint64> FileTypesAndSizes;
     CalculateTypesAndSizes(path, FileTypesAndSizes);
     QList<QPair<QString, double> > FoldersAndPercents = CalculateTypesPercentage(CalculateSize::sumSizes(FileTypesAndSizes), FileTypesAndSizes);
 //    PrintToConsole(FileTypesAndSizes, FoldersAndPercents);
-    return MergeToData(FileTypesAndSizes, FoldersAndPercents);
+    Update(MergeToData(FileTypesAndSizes, FoldersAndPercents));
 }
 
-void FileTypesStartegy::CalculateTypesAndSizes(const QString &path, QMap<QString, qint64> &fileTypesAndSizes) const
+void FileTypesStrategy::CalculateTypesAndSizes(const QString &path, QMap<QString, qint64> &fileTypesAndSizes) const
 {
     QDir folder(path);
 
@@ -37,7 +37,7 @@ void FileTypesStartegy::CalculateTypesAndSizes(const QString &path, QMap<QString
     }
 }
 
-QList<QPair<QString, double> > FileTypesStartegy::CalculateTypesPercentage(qint64 totalSize,
+QList<QPair<QString, double> > FileTypesStrategy::CalculateTypesPercentage(qint64 totalSize,
                                             QMap<QString, qint64> &fileTypesAndSizes) const
 {
     QList<QPair<QString, double> > TypesAndPercents;
@@ -56,7 +56,7 @@ QList<QPair<QString, double> > FileTypesStartegy::CalculateTypesPercentage(qint6
     return TypesAndPercents;
 }
 
-void FileTypesStartegy::PrintToConsole(const QMap<QString, qint64> &TypesListSizes,
+void FileTypesStrategy::PrintToConsole(const QMap<QString, qint64> &TypesListSizes,
                                        const QList<QPair<QString, double> > &TypesAndPercents) const
 {
     QTextStream out(stdout);
@@ -74,7 +74,7 @@ void FileTypesStartegy::PrintToConsole(const QMap<QString, qint64> &TypesListSiz
     }
 }
 
-QList<Data> FileTypesStartegy::MergeToData(const QMap<QString, qint64> &TypesListSizes, const QList<QPair<QString, double> > &TypesAndPercents) const
+QList<Data> FileTypesStrategy::MergeToData(const QMap<QString, qint64> &TypesListSizes, const QList<QPair<QString, double> > &TypesAndPercents) const
 {
     QList<Data> data;
     for (auto& x : TypesAndPercents)

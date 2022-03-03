@@ -2,6 +2,8 @@
 #define FILEMANAGERFORM_H
 #include "CalculateStrategy.h"
 #include "filedisplaymodel.h"
+#include "FileTypesStrategy.h"
+#include "FoldersStrategy.h"
 #include <QFileSystemModel>
 #include <QItemSelection>
 #include <QWidget>
@@ -14,25 +16,23 @@ class FileManagerForm : public QWidget
 {
     Q_OBJECT
 public:
-    enum class Grouping {
-        ByFolders,
-        ByTypes
-    };
     explicit FileManagerForm(QWidget *parent = nullptr);
     ~FileManagerForm();
-protected:
-    void changeDataInModel();
 protected slots:
     void changeGrouping(int index);
+    void changeDisplay(int index);
     void selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 private:
     Ui::FileManagerForm *ui;
-    QList<Data> data;
     QString path;
+    // strategies
+    CalculateStrategy* folder_strat;
+    CalculateStrategy* types_strat;
     CalculateStrategy* strategy;
-    Grouping group;
+    //observers
+    QList<FileObserver*> observers;
+    //models
     QFileSystemModel* tree_model;
-    FileDisplayModel* display_model;
 };
 
 #endif // FILEMANAGERFORM_H

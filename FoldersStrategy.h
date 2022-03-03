@@ -3,12 +3,12 @@
 #include "CalculateStrategy.h"
 #include <QPair>
 
-class FoldersStartegy : public ICalculate
+class FoldersStrategy : public CalculateStrategy
 {
 public:
-    FoldersStartegy() = default;
-    QList<Data> Calculate(const QString &path) override;
-    virtual ~FoldersStartegy() {}
+    FoldersStrategy() = default;
+    void Calculate(const QString &path) override;
+    virtual ~FoldersStrategy() {}
 private:
     QMap<QString, qint64> CalculateFoldersSizes(const QString& path) const;
     QList<QPair<QString, double> >  CalculateFoldersPercentage(const qint64& totalSize, const QMap<QString, qint64>& FoldersList) const;

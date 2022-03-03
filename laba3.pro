@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     CalculateSizeFunctions.cpp \
+    CalculateStrategy.cpp \
     Chart.cpp \
     FileTypesStrategy.cpp \
     FoldersStrategy.cpp \
